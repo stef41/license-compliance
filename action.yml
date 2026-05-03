@@ -1,0 +1,46 @@
+name: 'License Compliance'
+description: 'SBOM generation (CycloneDX/SPDX) and license compatibility checking. Blocks PRs adding dependencies with incompatible licenses.'
+branding:
+  icon: 'file-text'
+  color: 'gray-dark'
+
+inputs:
+  project-license:
+    description: 'Your project SPDX license identifier (e.g., MIT, Apache-2.0, GPL-3.0)'
+    required: true
+  package-manager:
+    description: 'Package manager: npm, pip, cargo, go, maven, gradle'
+    required: false
+    default: 'auto'
+  sbom-format:
+    description: 'SBOM output format: cyclonedx, spdx'
+    required: false
+    default: 'cyclonedx'
+  sbom-output:
+    description: 'Path to write SBOM file'
+    required: false
+    default: 'sbom.json'
+  deny-licenses:
+    description: 'Comma-separated list of denied license SPDX identifiers'
+    required: false
+    default: ''
+  allow-licenses:
+    description: 'Comma-separated list of explicitly allowed licenses (overrides compatibility check)'
+    required: false
+    default: ''
+  fail-on-incompatible:
+    description: 'Fail if incompatible licenses are found'
+    required: false
+    default: 'true'
+
+outputs:
+  total-dependencies:
+    description: 'Total number of dependencies analyzed'
+  incompatible-count:
+    description: 'Number of incompatible licenses found'
+  sbom-path:
+    description: 'Path to generated SBOM file'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
